@@ -1,12 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import BreakpointUtil from './breakpoint-util';
-import debounce from 'lodash.debounce';
+import BreakpointUtil from "./breakpoint-util";
 
 const BreakpointContext = React.createContext({
   currentWidth: 9999,
-  currentBreakpointName: ''
+  currentBreakpointName: ""
 });
 
 export default class BreakpointProvider extends React.Component {
@@ -19,15 +18,16 @@ export default class BreakpointProvider extends React.Component {
       currentBreakpointName: BreakpointUtil.getBreakpointName(currentWidth)
     };
 
-    this.handleResize = debounce(this.handleResize.bind(this), 100);
+    // this.handleResize = debounce(this.handleResize.bind(this), 100);
+    this.handleResize = this.handleResize.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener("resize", this.handleResize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
     this.handleResize.cancel();
   }
 
@@ -48,27 +48,25 @@ export default class BreakpointProvider extends React.Component {
       <BreakpointContext.Provider
         value={{
           currentWidth,
-          currentBreakpointName,
+          currentBreakpointName
         }}
       >
-        { children }
+        {children}
       </BreakpointContext.Provider>
     );
   }
 }
 
 export const useCurrentWidth = () => {
-  return React.useContext(BreakpointContext).currentWidth
-}
+  return React.useContext(BreakpointContext).currentWidth;
+};
 
 export const useCurrentBreakpointName = () => {
-  return React.useContext(BreakpointContext).currentBreakpointName
-}
+  return React.useContext(BreakpointContext).currentBreakpointName;
+};
 
 BreakpointProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
-export {
-  BreakpointContext,
-};
+export { BreakpointContext };
